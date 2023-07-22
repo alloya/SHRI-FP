@@ -19,7 +19,7 @@ import { isWhiteCircle, isWhiteTriangle, isRedStar, isGreenSquare, getGreens, co
 export const validateFieldN1 = allPass([isWhiteCircle, isWhiteTriangle, isRedStar, isGreenSquare])
 
 // 2. Как минимум две фигуры зеленые.
-export const validateFieldN2 = pipe(getGreens, gte(__, 1));
+export const validateFieldN2 = pipe(getGreens, gte(__, 2));
 
 // 3. Количество красных фигур равно кол-ву синих.
 export const validateFieldN3 = pipe(countRedsBlues, compareTwo);
