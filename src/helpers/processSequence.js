@@ -14,7 +14,8 @@
  * Иногда промисы от API будут приходить в состояние rejected, (прямо как и API в реальной жизни)
  * Ответ будет приходить в поле {result}
  */
-import { allPass, andThen, compose, ifElse, length, curry, pipe, prop, otherwise } from 'ramda';
+// processSequence.js
+import { allPass, andThen, compose, ifElse, length, pipe, prop, otherwise, tap } from 'ramda';
 import Api from '../tools/api';
 import { hasCorrectLength, hasOnlyNumbers } from '../tools/helpers';
 
@@ -33,8 +34,10 @@ const square = (input) => Math.pow(input, 2);
 const modulo = (input) => input % 3;
 const count = pipe(String, length);
 
+const logAndReturn = (writeLog) => (input) => tap(writeLog, input);
+
 const processSequence = async ({ value, writeLog, handleSuccess, handleError }) => {
-    const logStep = (input) => { writeLog(input); return input };
+    const logStep = logAndReturn(writeLog);
     const waitLogStep = andThen(logStep);
     const onError = (error) => handleError('ValidationError');
     const onSuccess = (input) => handleSuccess(input);
@@ -52,6 +55,7 @@ const processSequence = async ({ value, writeLog, handleSuccess, handleError }) 
         waitLogStep,
         andThen(modulo),
         waitLogStep,
+        getApiRequest,
         awaitGetApiResult,
         andThen(getAnimalsRequest),
         awaitGetApiResult,

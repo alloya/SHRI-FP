@@ -1,5 +1,5 @@
 import { SHAPES, COLORS } from '../constants';
-import { __, allPass, any, compose, countBy, dissoc, equals, gte, identity, prop, values, propEq, complement, pipe, filter, length, gt, curry } from 'ramda';
+import { __, any, countBy, equals, gte, identity, values, complement, pipe, filter, length, gt, curry, both, all, test, lte } from 'ramda';
 
 const log = el => { console.log(el); return el }
 
@@ -80,7 +80,6 @@ export const countColorsExceptWhite = pipe(values, filter(notWhite), countBy(ide
 
 export const hasThreeOrMoreOfAnyColor = pipe(values, any(gte(__, 3)));
 
+export const hasOnlyNumbers = all(test(/^\d$/));
 
-export const hasOnlyNumbers = (str) => Number(str) && true || false;
-
-export const hasCorrectLength = (str) => str.length >= 2 && str.length <= 10;
+export const hasCorrectLength = both(gte(2), lte(10), length);
